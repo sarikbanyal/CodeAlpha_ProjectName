@@ -18,8 +18,8 @@ User Accounts: Secure registration, login, and personalized order history.
 
 1. Clone the repository
 
-git clone https://github.com/sarikbanyal/my-django-store.git
-cd my-django-store
+git clone https://github.com/sarikbanyal/CodeAlpha_ProjectName.git
+cd CodeAlpha_ProjectName
 
 
 2. Set up the environment
