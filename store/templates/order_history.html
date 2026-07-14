@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History - MyStore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f3f4f6; color: #374151; line-height: 1.6; padding: 40px 5%; }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        .header-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { color: #111827; font-weight: 700; font-size: 2.2rem; }
+        .back-link { color: #6b7280; text-decoration: none; font-weight: 500; transition: color 0.3s; background: white; padding: 10px 20px; border-radius: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .back-link:hover { color: #3b82f6; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+
+        .order-card { background: white; border: none; border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+        .order-card:hover { transform: translateY(-3px); box-shadow: 0 15px 20px -3px rgba(0,0,0,0.08); }
+        
+        .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f3f4f6; padding-bottom: 15px; margin-bottom: 15px; }
+        .order-id { font-size: 1.2rem; font-weight: 700; color: #1f2937; }
+        .order-total { color: #10b981; font-weight: 700; font-size: 1.3rem; background: #ecfdf5; padding: 5px 15px; border-radius: 20px; }
+        
+        .order-date { font-size: 0.95rem; color: #6b7280; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        
+        .order-item { display: flex; justify-content: space-between; margin-bottom: 12px; color: #4b5563; font-weight: 500; padding: 10px; background: #f9fafb; border-radius: 8px; align-items: center; }
+        .order-item-details { display: flex; align-items: center; gap: 12px; }
+        .order-item-img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; }
+        .order-item span:last-child { font-weight: 600; color: #374151; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .empty-state h3 { color: #4b5563; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-area">
+            <h1>Your Orders 📦</h1>
+            <a href="/" class="back-link">← Back to Store</a>
+        </div>
+
+        {% if orders %}
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-id">Order #{{ order.id }}</span>
+                    <span class="order-total">${{ order.total_price }}</span>
+                </div>
+                <div class="order-date">📅 Placed on: {{ order.created_at|date:"M d, Y, h:i A" }}</div>
+                
+                {% for item in order.orderitem_set.all %}
+                <div class="order-item">
+                    <div class="order-item-details">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="order-item-img">
+                        {% else %}
+                            <div class="order-item-img" style="display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:0.6rem;">No Img</div>
+                        {% endif %}
+                        <span><strong>{{ item.quantity }}x</strong> {{ item.product.name }}</span>
+                    </div>
+                    <span>${{ item.price_at_time }} each</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <h3>You haven't placed any orders yet!</h3>
+                <p style="color: #9ca3af;">When you buy something, your receipt will show up here.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
