@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 3. Run the project
 
-python manage.py migrate
+    python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 
